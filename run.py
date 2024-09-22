@@ -12,6 +12,10 @@ from langchain import OpenAI
 from utils import reduce_openapi_spec, ColorPrint
 from model import RestGPT
 
+from langchain_community.agent_toolkits.openapi import planner
+from langchain_openai import ChatOpenAI
+
+
 logger = logging.getLogger()
 
 
@@ -58,7 +62,7 @@ def main():
 
     requests_wrapper = Requests(headers=headers)
 
-    llm = OpenAI(model_name="text-davinci-003", temperature=0.0, max_tokens=700)
+    llm = ChatOpenAI(model_name="gpt-4o", temperature=0.0, max_tokens=700)
     rest_gpt = RestGPT(llm, api_spec=api_spec, scenario=scenario, requests_wrapper=requests_wrapper, simple_parser=False)
 
     if scenario == 'tmdb':

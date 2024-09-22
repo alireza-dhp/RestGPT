@@ -13,7 +13,7 @@ from langchain.chains.base import Chain
 from langchain.chains.llm import LLMChain
 from langchain.requests import RequestsWrapper
 from langchain.prompts.prompt import PromptTemplate
-from langchain.llms.base import BaseLLM
+from langchain.llms.base import BaseLLM,BaseLanguageModel
 
 from utils import simplify_json, get_matched_endpoint, ReducedOpenAPISpec, fix_json_error
 from .parser import ResponseParser, SimpleResponseParser
@@ -110,7 +110,7 @@ Thought: {agent_scratchpad}
 
 
 class Caller(Chain):
-    llm: BaseLLM
+    llm: BaseLanguageModel
     api_spec: ReducedOpenAPISpec
     scenario: str
     requests_wrapper: RequestsWrapper
@@ -121,7 +121,7 @@ class Caller(Chain):
     with_response: bool = False
     output_key: str = "result"
 
-    def __init__(self, llm: BaseLLM, api_spec: ReducedOpenAPISpec, scenario: str, requests_wrapper: RequestsWrapper, simple_parser: bool = False, with_response: bool = False) -> None:
+    def __init__(self, llm: BaseLanguageModel, api_spec: ReducedOpenAPISpec, scenario: str, requests_wrapper: RequestsWrapper, simple_parser: bool = False, with_response: bool = False) -> None:
         super().__init__(llm=llm, api_spec=api_spec, scenario=scenario, requests_wrapper=requests_wrapper, simple_parser=simple_parser, with_response=with_response)
 
     @property
@@ -262,7 +262,7 @@ class Caller(Chain):
         if not self.with_response and 'responses' in tmp_docs:
             tmp_docs.pop("responses")
         tmp_docs = yaml.dump(tmp_docs)
-        encoder = tiktoken.encoding_for_model('text-davinci-003')
+        encoder = tiktoken.encoding_for_model('gpt-4o')
         encoded_docs = encoder.encode(tmp_docs)
         if len(encoded_docs) > 1500:
             tmp_docs = encoder.decode(encoded_docs[:1500])
