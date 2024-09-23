@@ -65,7 +65,42 @@ Background: The ids and names of the tracks of the album 1JnjcAIKQ9TSJFVFierTB8 
 User query: append the first song of the newest album 1JnjcAIKQ9TSJFVFierTB8 of Coldplay (id 4gzpq5DPGxSnKTe4SA8HAU) to my player queue.
 API calling 1: POST /me/player/queue to add Yellow (3AJwUDP919kvQ9QcozQPxg) to the player queue
 API response: Yellow is added to the player queue
-"""
+""",
+    "googlefit": """Example 1:
+Background: No background
+User query: Get my step count for the last week.
+API calling 1: Aggregate step count data for the last week using dataTypeName.
+API calling 1: POST /users/me/dataset:aggregate to fetch the step count data for the last week across all available data sources.
+API request: {"aggregateBy": [{"dataTypeName": "com.google.step_count.delta"}], "startTimeMillis": 1694860800000, "endTimeMillis": 1695465600000}
+API response: 6000 steps (Sept 16), 7500 steps (Sept 17), 8000 steps (Sept 18), ...
+Final Answer: Here is your step count for the last week: 6000 steps (Sept 16), 7500 steps (Sept 17), 8000 steps (Sept 18), ...
+
+Example 2:
+Background: No background
+User query: Show me my sleep data for the last month.
+API calling 1: Aggregate sleep data for the last month using dataTypeName.
+API calling 1: POST /users/me/dataset:aggregate to fetch the sleep data for the last month across all available data sources.
+API request: {"aggregateBy": [{"dataTypeName": "com.google.sleep.segment"}], "startTimeMillis": 1693545600000, "endTimeMillis": 1696224000000}
+API response: 7 hours (Sept 1), 6.5 hours (Sept 2), 8 hours (Sept 3), ...
+Final Answer: Here is your sleep data for the last month: 7 hours (Sept 1), 6.5 hours (Sept 2), 8 hours (Sept 3), ...
+
+Example 3:
+Background: No background
+User query: Show me my heart rate data for the last 2 days.
+API calling 1: Aggregate heart rate data for the last 2 days using dataTypeName.
+API calling 1: POST /users/me/dataset:aggregate to fetch the heart rate data for the last 2 days across all available data sources.
+API request: {"aggregateBy": [{"dataTypeName": "com.google.heart_rate.bpm"}], "startTimeMillis": 1695379200000, "endTimeMillis": 1695542400000}
+API response: 75 bpm (Sept 20), 70 bpm (Sept 21), ...
+Final Answer: Here is your heart rate data for the last 2 days: 75 bpm (Sept 20), 70 bpm (Sept 21).
+
+Example 4:
+Background: No background
+User query: Show me my calories burned for the last week.
+API calling 1: Aggregate calorie data for the last week using dataTypeName.
+API calling 1: POST /users/me/dataset:aggregate to fetch the calories burned data for the last week across all available data sources.
+API request: {"aggregateBy": [{"dataTypeName": "com.google.calories.expended"}], "startTimeMillis": 1694860800000, "endTimeMillis": 1695465600000}
+API response: 500 calories (Sept 16), 650 calories (Sept 17), 700 calories (Sept 18), ...
+Final Answer: Here is your calorie expenditure for the last week: 500 calories (Sept 16), 650 calories (Sept 17), 700 calories (Sept 18)."""
 }
 
 # Thought: I am finished executing the plan and have the information the user asked for or the data the used asked to create

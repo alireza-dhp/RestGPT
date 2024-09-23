@@ -50,7 +50,9 @@ class RestGPT(Chain):
             scenario = 'tmdb'
         if scenario in ['Spotify']:
             scenario = 'spotify' 
-        if scenario not in ['tmdb', 'spotify']:
+        if scenario in ['GoogleFit', 'googlefit']:
+            scenario = 'googlefit' 
+        if scenario not in ['tmdb', 'spotify', 'googlefit']:
             raise ValueError(f"Invalid scenario {scenario}")
         
         planner = Planner(llm=llm, scenario=scenario)

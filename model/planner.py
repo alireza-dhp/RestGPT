@@ -51,6 +51,50 @@ Plan step 5: Add the most popular songs by Coldplay, Yellow (3AJwUDP919kvQ9QcozQ
 API response: Successfully called POST /playlists/7LjHVU3t3fcxj5aiPFEW4T/tracks to add Yellow (3AJwUDP919kvQ9QcozQPxg), Viva La Vida (1mea3bSkSGXuIRvnydlB5b) in playlist "Love Coldplay" (7LjHVU3t3fcxj5aiPFEW4T). The playlist id is 7LjHVU3t3fcxj5aiPFEW4T.
 Thought: I am finished executing a plan and have the data the used asked to create
 Final Answer: I have made a new playlist called "Love Coldplay" containing Yellow and Viva La Vida by Coldplay.
+""",
+"googlefit": """Example 1:
+User query: Show me my step count for the last two days.
+Plan step 1: Set the date range for the last two days from the current date in Austria's time zone (CEST).
+API response: Date range set successfully: From 2024-09-21T00:00:00+02:00 to 2024-09-23T23:59:59+02:00.
+Plan step 2: Fetch step counts within the specified time period.
+API response: Successfully called GET /fitness/v1/users/me/dataset:aggregate for step counts. The result is: 10500 steps on 2024-09-21 and 9500 steps on 2024-09-22.
+Thought: I am finished executing a plan and have the data the user asked for.
+Final Answer: Here are your step counts for the last two days:
+2024-09-21: 10500 steps
+2024-09-22: 9500 steps.
+
+Example 2:
+User query: Show my sleep data for the last week.
+Plan step 1: Set the date range for the last seven days from the current date in Austria's time zone (CEST).
+API response: Date range set successfully: From 2024-09-16T00:00:00+02:00 to 2024-09-23T23:59:59+02:00.
+Plan step 2: Fetch sleep data within the specified time period.
+API response: Successfully called GET /fitness/v1/users/me/dataset:aggregate for sleep data. The result is: 7 hours on 2024-09-17, 6.5 hours on 2024-09-18, 8 hours on 2024-09-19, 6 hours on 2024-09-20, 7.5 hours on 2024-09-21, 7 hours on 2024-09-22, and 6 hours on 2024-09-23.
+Plan step 3: Organize the data in a table format.
+Thought: I am finished executing a plan and have the data the user asked for.
+Final Answer: Here is your sleep data for the last seven days:
+| Date       | Sleep Duration |
+|------------|----------------|
+| 2024-09-17 | 7 hours        |
+| 2024-09-18 | 6.5 hours      |
+| 2024-09-19 | 8 hours        |
+| 2024-09-20 | 6 hours        |
+| 2024-09-21 | 7.5 hours      |
+| 2024-09-22 | 7 hours        |
+| 2024-09-23 | 6 hours        |
+
+Example 3:
+User query: Show me step counts for the last month.
+Plan step 1: Set the date range for the last 30 days from the current date in Austria's time zone (CEST).
+API response: Date range set successfully: From 2024-08-23T00:00:00+02:00 to 2024-09-23T23:59:59+02:00.
+Plan step 2: Fetch step counts within the specified time period.
+API response: Successfully called GET /fitness/v1/users/me/dataset:aggregate for step counts. The result is a total of 250,000 steps over the last month.
+Thought: I am finished executing a plan and have the data the user asked for.
+Final Answer: You have walked 250,000 steps in the last month.
+
+Important notes:
+- The AI agent must handle dates and times explicitly in the user's time zone (defaulting to Austria/CEST if not provided).
+- API calls should avoid hallucinating data, fetching only what's available.
+- The agent must aggregate data using `dataTypeName` without the need to specify data source IDs.
 """
 }
 

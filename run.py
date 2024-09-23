@@ -6,7 +6,7 @@ import time
 import yaml
 
 import spotipy
-from langchain.requests import Requests
+from langchain.requests import RequestsWrapper
 from langchain import OpenAI
 
 from utils import reduce_openapi_spec, ColorPrint
@@ -14,6 +14,8 @@ from model import RestGPT
 
 from langchain_community.agent_toolkits.openapi import planner
 from langchain_openai import ChatOpenAI
+
+from server import get_access_token
 
 
 logger = logging.getLogger()
@@ -33,7 +35,7 @@ def main():
     )
     logger.setLevel(logging.INFO)
 
-    scenario = input("Please select a scenario (TMDB/Spotify): ")
+    scenario = input("Please select a scenario (TMDB/Spotify/GoogleFit): ")
     scenario = scenario.lower()
 
     if scenario == 'tmdb':
@@ -57,10 +59,22 @@ def main():
         headers = {
             'Authorization': f'Bearer {access_token}'
         }
+    elif scenario == 'googlefit':
+        with open("specs/googlefit_oas.json") as f:
+            raw_api_spec = json.load(f)
+
+        api_spec = reduce_openapi_spec(raw_api_spec, only_required=False, merge_allof=True)
+
+        scopes = list(raw_api_spec['components']['securitySchemes']['Oauth2']['flows']['implicit']['scopes'].keys())
+        access_token = get_access_token(scopes)
+        
+        headers = {
+            'Authorization': f'Bearer {access_token}'
+        }
     else:
         raise ValueError(f"Unsupported scenario: {scenario}")
 
-    requests_wrapper = Requests(headers=headers)
+    requests_wrapper = RequestsWrapper(headers=headers)
 
     llm = ChatOpenAI(model_name="gpt-4o", temperature=0.0, max_tokens=700)
     rest_gpt = RestGPT(llm, api_spec=api_spec, scenario=scenario, requests_wrapper=requests_wrapper, simple_parser=False)
@@ -69,6 +83,8 @@ def main():
         query_example = "Give me the number of movies directed by Sofia Coppola"
     elif scenario == 'spotify':
         query_example = "Add Summertime Sadness by Lana Del Rey in my first playlist"
+    elif scenario == 'googlefit':
+        query_example = "Show me my step count for the last week"
     print(f"Example instruction: {query_example}")
     query = input("Please input an instruction (Press ENTER to use the example instruction): ")
     if query == '':

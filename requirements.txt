@@ -1,0 +1,8 @@
+colorama
+langchain
+langchain-openai
+openai
+spotipy
+tiktoken
+PyYAML
+pydantic
